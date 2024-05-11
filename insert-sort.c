@@ -17,6 +17,11 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 5; i++) {
         printf("%d ", vetor[i]);
     }
+    int tamMin =100;
+    int tamMax=10000;
+    int increment=100;
+    int inter=100;
+    double total=0;
     clock_gettime(CLOCK_MONOTONIC, &b);
     insert_sort(vetor,5);
     clock_gettime(CLOCK_MONOTONIC, &a);
