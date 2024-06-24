@@ -11,28 +11,41 @@ void trocar(int vetor[], int pos1, int pos2) {
     vetor[pos2] = temp;
 }
 int main(int argc, char **argv) {
+    int tamMin =100; /*tamanho do menor vetor*/
+    int tamMax=10000; /*tamanho do maior vetor*/
+    int increment=100; /*vai subindo o tamanho dos arrays*/
+    int inter=100; /*quant de iterações*/
     struct timespec a, b;
-    unsigned int t;
-    int vetor[5] = {7, 4, 3, 9, 5};
-    for (int i = 0; i < 5; i++) {
-        printf("%d ", vetor[i]);
+    unsigned int total;
+    FILE *file = fopen("insert_time.txt", "w");
+    if (file == NULL) {
+        printf("Erro ao criar o arquivo.");
+        return 1;
     }
-    int tamMin =100;
-    int tamMax=10000;
-    int increment=100;
-    int inter=100;
-    double total=0;
-    clock_gettime(CLOCK_MONOTONIC, &b);
-    insert_sort(vetor,5);
-    clock_gettime(CLOCK_MONOTONIC, &a);
-
-    t = (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
-
-    printf("%u\n", t);
-    for (int i = 0; i < 5; i++) {
-        printf("%d ", vetor[i]);
+    fprintf(file, "# TamanhoVetor TempoMedio\n");
+    for(int dataSize=tamMin; dataSize<=tamMax;dataSize+=increment){
+        int *array = (int *)malloc(dataSize * sizeof(int));
+        double average_time = 0.0;
+        
+        for (int i = 0; i < inter; i++) {
+            // Inicializa o vetor com valores aleatórios
+            for (int j = 0; j < dataSize; j++) {
+                array[j] = rand() % 1000;
+            }
+            // Executa o algoritmo e mede o tempo
+            clock_gettime(CLOCK_MONOTONIC, &b);
+            insert_sort(array, dataSize);
+            clock_gettime(CLOCK_MONOTONIC, &a);
+            total= (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
+            double total_s=total/1e9;
+            average_time += total_s;
+        }
+        average_time /=inter; // ao fim do for de cada vetor de tam ele devide o tempo de execulção de todos e divide pela interação
+        fprintf(file, "%d %lf\n", dataSize, average_time);
+        free(array);
     }
-    printf("\n");
+    fclose(file);
+    printf("Dados salvos no arquivo 'insert_time.txt'.\n");
     return 0;
 }
 void insert_sort(int v[], int n){

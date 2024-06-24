@@ -3,8 +3,10 @@
 #include <time.h>
 #include <unistd.h>
 
-void selection_sort(int v[], int n);
+void quick_sort(int v[], int s, int e);
+int partition(int v[], int s, int e);
 void trocar(int vetor[], int pos1, int pos2);
+
 int main(int argc, char **argv) {
     int tamMin =100; /*tamanho do menor vetor*/
     int tamMax=10000; /*tamanho do maior vetor*/
@@ -12,7 +14,7 @@ int main(int argc, char **argv) {
     int inter=100; /*quant de iterações*/
     struct timespec a, b;
     unsigned int total;
-    FILE *file = fopen("selection_time.txt", "w");
+    FILE *file = fopen("quick_bc_time.txt", "w");
     if (file == NULL) {
         printf("Erro ao criar o arquivo.");
         return 1;
@@ -23,13 +25,13 @@ int main(int argc, char **argv) {
         double average_time = 0.0;
         
         for (int i = 0; i < inter; i++) {
-            // Inicializa o vetor com valores aleatórios
+            // Inicializa o vetor com valores ordenados inversamente?
             for (int j = 0; j < dataSize; j++) {
-                array[j] = rand() % 1000;
+                array[j] = dataSize+1;
             }
             // Executa o algoritmo e mede o tempo
             clock_gettime(CLOCK_MONOTONIC, &b);
-            selection_sort(array, dataSize);
+            quick_sort(array,0,(dataSize-1));
             clock_gettime(CLOCK_MONOTONIC, &a);
             total= (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
             double total_s=total/1e9;
@@ -40,22 +42,30 @@ int main(int argc, char **argv) {
         free(array);
     }
     fclose(file);
-    printf("Dados salvos no arquivo 'selection_time.txt'.\n");
+    printf("Dados salvos no arquivo 'quick_bc_time.txt'.\n");
     return 0;
-}
-void selection_sort(int v[], int n) {
-    for (int i = 0; i <= (n); i++) {
-        int min=i;
-        for (int j = (i+1); j < n; j++) {
-            if (v[j]<v[min]) {
-                min=j;
-            }
-        }
-        trocar(v,i,min);
-    }
 }
 void trocar(int vetor[], int pos1, int pos2) {
     int temp = vetor[pos1];
     vetor[pos1] = vetor[pos2];
     vetor[pos2] = temp;
+}
+void quick_sort(int v[], int s,int e){
+    if (s<e) {
+        int p=partition(v, s, e);
+        quick_sort(v,s,p-1);
+        quick_sort(v,p+1,e);
+    }
+}
+int partition(int v[], int ini, int fim){
+    int p=fim;
+    int d=ini-1;//? pq isso? sendo que no caderno ta de outro jeito...
+    for (int i = ini; i <=(fim-1); i++) {
+        if (v[i]<=v[p]) {
+            d=d+1;
+            trocar(v,i,d);
+        }   
+    }
+    trocar(v,d+1,p);
+    return d+1;
 }
