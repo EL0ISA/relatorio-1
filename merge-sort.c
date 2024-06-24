@@ -8,12 +8,12 @@ void merge(int v[], int s, int m, int e);
 
 int main(int argc, char **argv) {
     int tamMin =100; /*tamanho do menor vetor*/
-    int tamMax=1000; /*tamanho do maior vetor*/
+    int tamMax=10000; /*tamanho do maior vetor*/
     int increment=100; /*vai subindo o tamanho dos arrays*/
     int inter=100; /*quant de iterações*/
     struct timespec a, b;
     unsigned int total;
-    FILE *file = fopen("merge_time_b.txt", "w");
+    FILE *file = fopen("merge_time.txt", "w");
     if (file == NULL) {
         printf("Erro ao criar o arquivo.");
         return 1;
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
         free(array);
     }
     fclose(file);
-    printf("Dados salvos no arquivo 'merge_time_b.txt'.\n");
+    printf("Dados salvos no arquivo 'merge_time.txt'.\n");
     return 0;
 }
 void merge_sort(int v[], int s,int e){
