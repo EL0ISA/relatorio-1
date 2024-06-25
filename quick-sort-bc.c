@@ -6,7 +6,47 @@
 void quick_sort(int v[], int s, int e);
 int partition(int v[], int s, int e);
 void trocar(int vetor[], int pos1, int pos2);
-
+void merge_sort(int v[], int s, int e);
+void merge(int v[], int s, int m, int e);
+int bsea(int v[], int s, int e, int k);
+void merge_sort(int v[], int s,int e){
+    if (s<e) {
+        int m=(s+e)/2;
+        merge_sort(v,s,m);
+        merge_sort(v,m+1,e);
+        merge(v,s,m,e);
+    }
+}
+void merge(int v[], int s, int m, int e){
+    int i=s;
+    int j=m+1;
+    int vetorAux[e-s+1];
+    for(int k=0; k < (e-s+1);k++){
+        if((i<=m)&& ((j>e)|| v[i]<v[j])){
+            vetorAux[k]=v[i];
+            i=i+1;
+        }else{
+            vetorAux[k]=v[j];
+            j=j+1;
+        }
+    }
+    for (int k = 0; k <= (e-s); k++) {
+        v[s+k]=vetorAux[k];
+    }
+}
+int bsea(int v[], int s, int e, int k){
+    if (s<e){
+        int m =(s+e)/2;
+        if (k==v[m]){
+            return m;
+        }
+        if (k<v[m]){
+            return bsea(v,s,m-1,k);
+        }
+        return bsea(v,m+1,e,k);
+    }
+    return 0;
+}
 int main(int argc, char **argv) {
     int tamMin =100; /*tamanho do menor vetor*/
     int tamMax=10000; /*tamanho do maior vetor*/
@@ -22,13 +62,29 @@ int main(int argc, char **argv) {
     fprintf(file, "# TamanhoVetor TempoMedio\n");
     for(int dataSize=tamMin; dataSize<=tamMax;dataSize+=increment){
         int *array = (int *)malloc(dataSize * sizeof(int));
+        int *array2 = (int *)malloc(dataSize * sizeof(int));
         double average_time = 0.0;
+            for (int j = 0; j < 13; j++) {
+                array[j] = rand() % 10;
+                array2[j] = array[j];
+            }
+            merge_sort(array2,0,12);
+            int m=(13/2);
+            int md=array2[m];
+            int p = bsea(array,0,12,md);
+            trocar(array,p,(13-1));
         
         for (int i = 0; i < inter; i++) {
-            // Inicializa o vetor com valores ordenados inversamente?
+            // Inicializa o vetor com valores ordenados
             for (int j = 0; j < dataSize; j++) {
-                array[j] = dataSize+1;
+                array[j] = rand() % 1000;
+                array2[j] = array[j];
             }
+            merge_sort(array2,0,dataSize-1);
+            int m=(dataSize/2);
+            int md=array2[m];
+            int p = bsea(array,0,dataSize-1,md);
+            trocar(array,p,(dataSize-1));
             // Executa o algoritmo e mede o tempo
             clock_gettime(CLOCK_MONOTONIC, &b);
             quick_sort(array,0,(dataSize-1));
