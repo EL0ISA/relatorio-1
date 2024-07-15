@@ -59,7 +59,7 @@ void quick_sort(int v[], int s,int e){
 }
 int partition(int v[], int ini, int fim){
     int p=fim;
-    int d=ini-1;//? pq isso? sendo que no caderno ta de outro jeito...
+    int d=ini-1;
     for (int i = ini; i <=(fim-1); i++) {
         if (v[i]<=v[p]) {
             d=d+1;

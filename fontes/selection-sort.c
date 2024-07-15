@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 void selection_sort(int v[], int n) {
-    for (int i = 0; i <= (n); i++) {
+    for (int i = 0; i <(n-1); i++) {
         int min=i;
         for (int j = (i+1); j < n; j++) {
             if (v[j]<v[min]) {

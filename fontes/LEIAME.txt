@@ -1,0 +1,7 @@
+Os códigos dos algoritmos foram desenvolvidos em ambiente linux, dessa forma, podem apresentar erros
+de se tentados execultados em outros ambientes, como Windowns.
+Dessa forma, para compilar e rodar algum dos codigos, siga os comando abaixo:
+
+    gcc -c nome_arquivo.c
+    gcc -o programa nome_arquivo.o
+    ./programa
